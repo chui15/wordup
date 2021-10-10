@@ -1,5 +1,7 @@
 # WordUp
 
+![logo](src/images/logo.png)
+
 Group Project for CSPB3308
 
 ## Team Members
