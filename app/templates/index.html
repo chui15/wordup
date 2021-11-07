@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <title>WordUp - Home</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="shortcut icon" type="png" href="{{ url_for('static', filename='images/logo.png') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="container">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo">
+            <h1 class="home-title">Welcome, {{user.name}} &#128075;</h1>
+        </div>
+    </body>
+</html>

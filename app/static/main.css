@@ -24,17 +24,26 @@ body {
 }
 
 .logo {
-    height: 200px;
-    width: 350px;
+    height: 150px;
+    width: 300px;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
 
-.form-label {
-    font-size: 25px;
+.logo:hover {
+    cursor: pointer;
+}
+
+.form-label, .form-text {
+    font-size: 20px;
     text-align: center;
+}
+
+.form-text {
+    margin-top: 20px;
+    padding-top: 15px;
 }
 
 .form-input {
@@ -68,4 +77,12 @@ body {
 .submit:hover {
     cursor: pointer;
     color: blue;
+}
+
+.error {
+    color: red;
+}
+
+.home-title {
+    text-align: center;
 }
