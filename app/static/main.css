@@ -85,6 +85,13 @@ body {
     font-size: 20px;
 }
 
+.success {
+    font-family: 'Montserrat', sans-serif;
+    color: green;
+    text-align: center;
+    font-size: 25px;
+}
+
 .home-title {
     text-align: center;
 }

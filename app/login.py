@@ -20,10 +20,21 @@ def index():
     }
     return render_template('index.html', user=user_info)
 
-@app.route('/signup')
+@app.route('/signup', methods=["POST", "GET"])
 def signup():
-    error = None
-    return render_template('signup.html', error=error)
+    user_error = None
+    password_error = None
+    success = None
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if len(username) < 5:
+            user_error = 'Username must be at least 5 characters long'
+        if len(password) < 3:
+            password_error = 'Password must be at least 3 characters long'
+        if not user_error and not password_error:
+            success = 'Account successfully created! Please click the logo to return to the login page'
+    return render_template('signup.html', user_error=user_error, password_error=password_error, success=success)
 
 if __name__ == '__main__':
     app.run(debug=True)
