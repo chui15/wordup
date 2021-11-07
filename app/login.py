@@ -1,14 +1,16 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=["POST", "GET"])
 def login():
     error = None
-    # if request.method == 'POST':
-    #     if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-    #         error = 'Invalid username and password, please try again'
-    #     else:
-    #         return redirect(url_for('index'))
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username != 'admin' or password != 'admin':
+            error = 'Invalid username and password, please try again'
+        else:
+            return redirect(url_for('index'))
     return render_template('login.html', error=error)
 
 @app.route('/index')
