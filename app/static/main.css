@@ -23,7 +23,7 @@ body {
     font-weight: bolder;
 }
 
-.logo {
+.logo, .logo-index {
     height: 150px;
     width: 300px;
     text-align: center;

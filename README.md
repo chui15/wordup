@@ -1,6 +1,6 @@
 # WordUp
 
-![logo](src/images/logo.png)
+![logo](app/static/images/logo.png)
 
 Group Project for CSPB3308
 
@@ -29,3 +29,29 @@ Risks to project completion include but are not limited to:
 ## Development method
 
 Agile, primarily using Jira for story/feature tracking
+
+## Technologies Used
+
+- Flask
+- Python3
+- MySQL
+- HTML & CSS
+
+## Set Up Environment
+
+1. Clone the repository
+```shell
+git clone https://github.com/chui15/wordup.git
+cd wordup
+```
+
+2. Install necessary dependencies
+```shell
+npm install
+```
+
+3. Activate the virtual environment and run the Flask application
+``` shell
+source bin/activate
+python3 app/login.py
+```
