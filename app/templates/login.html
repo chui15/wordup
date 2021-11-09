@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>WordUp - Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="shortcut icon" type="png" href="{{ url_for('static', filename='images/logo.png') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="container">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo">
+            </a>
+            <h1 class="main-title">Welcome to WordUp!</h1>
+            <form action="{{ url_for('login') }}" method="POST">
+                <p class="form-label">Username</p>
+                <input type="text" class="form-input" placeholder="i.e. JohnDoe123" name="username" value="{{request.form.username}}">
+                <p class="form-label">Password</p>
+                <input type="password" class="form-input" placeholder="Password" name="password" value="{{request.form.password}}">
+                <button class="submit" type="submit" value="Login">Log In</button>
+                {% if error %}
+                    <p class="error">Error: {{ error }}</p>
+                {% endif %}
+                <p class="form-text">Don't have an account yet? Sign up <a href="{{ url_for('signup') }}">here</a>!</p>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>WordUp - Sign Up</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="shortcut icon" type="png" href="{{ url_for('static', filename='images/logo.png') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="container">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo">
+            </a>
+            <h1 class="main-title">Welcome to WordUp!</h1>
+            <form action="{{ url_for('signup') }}" method="POST">
+                <p class="form-label">Username</p>
+                <input type="text" class="form-input" placeholder="i.e. JohnDoe123" name="username" value="{{request.form.username}}">
+                {% if user_error %}
+                <p class="error">Error: {{ user_error }}</p>
+                {% endif %}
+                <p class="form-label">Password</p>
+                <input type="password" class="form-input" placeholder="Password" name="password" value="{{request.form.password}}">
+                {% if password_error %}
+                <p class="error">Error: {{ password_error }}</p>
+                {% endif %}
+                <button class="submit" type="submit" value="Signup">Sign Up</button>
+                {% if success %}
+                <p class="success">{{ success }}</p>
+                {% endif %}
+            </form>
+        </div>
+    </body>
+</html>
