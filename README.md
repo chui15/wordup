@@ -42,7 +42,6 @@ Agile, primarily using Jira for story/feature tracking
 1. Clone the repository
 ```shell
 git clone https://github.com/chui15/wordup.git
-cd wordup
 ```
 
 2. Install necessary dependencies
@@ -50,8 +49,9 @@ cd wordup
 npm install
 ```
 
-3. Activate the virtual environment and run the Flask application
+3. Activate the virtual environment from one directory up, then run the Flask application from within the wordup directory
 ``` shell
-source bin/activate
+source wordup/bin/activate
+cd wordup
 python3 app/login.py
 ```
