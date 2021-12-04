@@ -1,11 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
-import os
-import psycopg2
+import config
 
-DATABASE_URL = "postgres://louaeunlzgjquy:c8a7bec02e60dca0d8493dcb1ddfe2b450cd67053fa83727a36829f4c84a7088@ec2-52-54-237-144.compute-1.amazonaws.com:5432/dc0ft4arkacrbg"
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-conn.autocommit = True
-cur = conn.cursor()
+# connect to postgresql database
+cur = config.connect()
 
 app = Flask(__name__)
 
