@@ -53,5 +53,5 @@ npm install
 ``` shell
 source wordup/bin/activate
 cd wordup
-python3 app/login.py
+python3 app/main.py
 ```
