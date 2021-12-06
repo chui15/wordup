@@ -10,9 +10,18 @@
     </head>
     <body>
         <div class="container">
+            <a href="{{ url_for('login') }}">
+                <img src="{{ url_for('static', filename='images/logout-icon.png') }}" alt="log out" class="logout">
+            </a>
+            <div class="signout">Sign Out</div>
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo-index">
             <h1 class="home-title">Welcome, {{user.name}} &#128075;</h1>
-            <p>Page is currently still under construction!</p>
+            <div class="list-container">
+                <h2>My Vocabulary Lists</h2>
+                <button class="submit" type="submit" value="New">
+                    <a href="{{ url_for('submit_list') }}">Create New List</a>
+                </button>
+            </div>
         </div>
     </body>
 </html>
