@@ -12,7 +12,10 @@
         <div class="container">
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo-index">
             <h1 class="home-title">Welcome, {{user.name}} &#128075;</h1>
-            <p>Page is currently still under construction!</p>
+            <div class="list-container">
+                <h2>My Vocabulary Lists</h2>
+                <button class="submit">Create New List</button>
+            </div>
         </div>
     </body>
 </html>
