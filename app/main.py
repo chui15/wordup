@@ -31,6 +31,10 @@ def index():
     }
     return render_template('index.html', user=user_info)
 
+@app.route('/createlist')
+def create_list():
+    return render_template('create_list.html')
+
 @app.route('/signup', methods=["POST", "GET"])
 def signup():
     user_error = None

@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>WordUp - Home</title>
+        <title>WordUp - Create New List</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
         <link rel="shortcut icon" type="png" href="{{ url_for('static', filename='images/logo.png') }}">
@@ -11,13 +11,7 @@
     <body>
         <div class="container">
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo-index">
-            <h1 class="home-title">Welcome, {{user.name}} &#128075;</h1>
-            <div class="list-container">
-                <h2>My Vocabulary Lists</h2>
-                <button class="submit" type="submit" value="Create">
-                    <a href="{{ url_for('create_list') }}">Create New List</a>
-                </button>
-            </div>
+            <h1 class="home-title">Create New List</h1>
         </div>
     </body>
 </html>
