@@ -13,7 +13,10 @@ def login():
         username = str(request.form.get('username')).strip()
         password = str(request.form.get('password')).strip()
         # Retrieving data
-        cur.execute("SELECT * from users WHERE username = %s AND password = %s", (username, password))
+        try:
+            cur.execute("SELECT * from users WHERE username = %s AND password = %s", (username, password))
+        except Exception as e:
+            error = str(e)
         results = cur.fetchone()
         db_user = results[1].strip()
         db_pass = results[4].strip()
@@ -31,8 +34,12 @@ def index():
     }
     return render_template('index.html', user=user_info)
 
-@app.route('/createlist')
-def create_list():
+@app.route('/createlist', methods=["POST", "GET"])
+def submit_list():
+    vocab_list = ""
+    if request.method == "POST":
+        vocab_list = request.form['words']
+        #TO DO: insert function to call oxford API to get definitions for each word to generate list
     return render_template('create_list.html')
 
 @app.route('/signup', methods=["POST", "GET"])

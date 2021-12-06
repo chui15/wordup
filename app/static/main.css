@@ -120,3 +120,21 @@ a {
     top: 8px;
     right: 16px;
 }
+
+.instructions {
+    font-size: 20px;
+}
+
+.vocab-input {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 22px;
+    padding: 0 0 400px 0;
+    line-height: 1em;
+    resize: none;
+    border-style: none;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    text-align: left;
+}

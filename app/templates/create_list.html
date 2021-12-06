@@ -10,8 +10,12 @@
     </head>
     <body>
         <div class="container">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo-index">
             <h1 class="home-title">Create New List</h1>
+            <p class="instructions">Please enter each word you would like to include in your vocabulary list in the box below, separating each word with a comma.</p>
+            <form action="{{ url_for('submit_list') }}" method="POST">
+                <input type="text" class="vocab-input" placeholder="i.e. accede, berate, burnish" name="words" value="{{request.form.words}}">
+            </form>
+            <button class="submit" type="submit" value="Create">Confirm New List</button>
         </div>
     </body>
 </html>
