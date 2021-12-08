@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-#from flask.ext.session import Session
 import config
 
 # connect to postgresql database
 cur = config.connect()
 
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = 'QLFPdITW3vKTWfjw_GmdWA'
 
 @app.route('/', methods=["POST", "GET"])
 def login():
