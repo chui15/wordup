@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_session import Session
 import config
 import json
 import requests
+import pdfkit
 
 # connect to postgresql database
 cur = config.connect()
@@ -17,6 +18,24 @@ app = Flask(__name__)
 SESSION_TYPE = 'filesystem'
 app.config.from_object(__name__)
 Session(app)
+
+@app.route('/convert')
+def convert():
+    listname = request.args['listname']
+    try:
+        cur.execute("SELECT listitems FROM list_items WHERE listname = '{0}'".format(listname))
+    except Exception as e:
+        print(e)
+    res = cur.fetchone()
+    list_items = res[0]
+    definitions = dict((a.strip(), b.strip()) for a, b in (item.split('=') for item in list_items.split('| ')))
+    css = 'static/main.css'
+    html = render_template('pdf_template.html', definitions=definitions, listname=listname, css=css)
+    pdf = pdfkit.from_string(html, False)
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
+    return response
 
 @app.route('/', methods=["POST", "GET"])
 def login():
