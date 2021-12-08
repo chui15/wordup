@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
+from flask_session import Session
 import config
 
 # connect to postgresql database
 cur = config.connect()
 
 app = Flask(__name__)
+SESSION_TYPE = 'filesystem'
+app.config.from_object(__name__)
+Session(app)
 
 @app.route('/', methods=["POST", "GET"])
 def login():
@@ -20,6 +24,8 @@ def login():
         results = cur.fetchone()
         db_user = results[1].strip()
         db_pass = results[4].strip()
+        db_id = results[0]
+        session['user_id'] = db_id
         if password != db_pass or username != db_user:
             error = 'Invalid username and password, please try again'
         else:
@@ -30,17 +36,30 @@ def login():
 def index():
     username = request.args['user']
     user_info = {
-        'name': username
+        'name': username,
+        'id': session.get('user_id', None)
     }
     return render_template('index.html', user=user_info)
 
 @app.route('/createlist', methods=["POST", "GET"])
-def submit_list():
-    vocab_list = ""
-    if request.method == "POST":
-        vocab_list = request.form['words']
-        #TO DO: insert function to call oxford API to get definitions for each word to generate list
-    return render_template('create_list.html')
+def create_list():
+    error = None
+    user_id = session.get('user_id', None)
+    if request.method == 'POST':
+        vocab_list = str(request.form.get('words')).strip()
+        list_name = str(request.form.get('listname')).strip()
+        if vocab_list == "" or list_name == "":
+            error = 'Cannot have an empty list or empty list name'
+        else:
+            return redirect(url_for('new_list', vocab_list=vocab_list, list_name=list_name))
+    return render_template('create_list.html', error=error)
+
+@app.route('/newlist', methods=["POST", "GET"])
+def new_list():
+    vocab = request.args['vocab_list']
+    listname = request.args['list_name']
+    #TO DO: insert function to call oxford API to get definitions for each word to generate list
+    return render_template('vocab_list.html', vocab=vocab, listname=listname)
 
 @app.route('/signup', methods=["POST", "GET"])
 def signup():

@@ -11,11 +11,18 @@
     <body>
         <div class="container">
             <h1 class="home-title">Create New List</h1>
-            <p class="instructions">Please enter each word you would like to include in your vocabulary list in the box below, separating each word with a comma.</p>
-            <form action="{{ url_for('submit_list') }}" method="POST">
+            <form action="{{ url_for('create_list') }}" method="POST">
+                <p class="form-label">List Name</p>
+                <input type="text" class="form-input" placeholder="i.e. List 1" name="listname" value="{{request.form.listname}}">
+                <p class="instructions">Please enter each word you would like to include in your vocabulary list in the box below, separating each word with a comma.</p>
                 <input type="text" class="vocab-input" placeholder="i.e. accede, berate, burnish" name="words" value="{{request.form.words}}">
+                {% if error %}
+                <p class="error">Error: {{ error }}</p>
+                {% endif %}
+                <button class="submit" type="submit" value="New">
+                    Create New List
+                </button>
             </form>
-            <button class="submit" type="submit" value="Create">Confirm New List</button>
         </div>
     </body>
 </html>
