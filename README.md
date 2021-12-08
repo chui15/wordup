@@ -44,15 +44,11 @@ Agile, primarily using Jira for story/feature tracking
 git clone https://github.com/chui15/wordup.git
 ```
 
-2. Install necessary dependencies
-```shell
-npm install
-```
-
-3. Activate the virtual environment from one directory up, then run the Flask application from within the wordup directory
+2. Activate the virtual environment from one directory up, install necessary dependencies, then run the Flask application from within the wordup directory
 ``` shell
 source wordup/bin/activate
 cd wordup
+pip install -r requirements.txt
 export FLASK_APP=app/main.py
 export FLASK_ENV=development
 flask run
