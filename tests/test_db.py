@@ -1,7 +1,7 @@
 import unittest
 import testing.postgresql
 import psycopg2
-# from sqlalchemy import create_engine, engine
+from sqlalchemy import create_engine
 
 
 class TestDB(unittest.TestCase):
