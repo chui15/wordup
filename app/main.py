@@ -1,9 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 import config
+import json
+import requests
 
 # connect to postgresql database
 cur = config.connect()
+
+# Oxford API credentials
+app_id = '4edc5d8e'
+app_key = 'e359c6bc00f91e8df82211bdf3199eab'
+language_code = 'en-us'
+endpoint = 'entries'
 
 app = Flask(__name__)
 SESSION_TYPE = 'filesystem'
@@ -56,10 +64,23 @@ def create_list():
 
 @app.route('/newlist', methods=["POST", "GET"])
 def new_list():
+    error = None
     vocab = request.args['vocab_list']
     listname = request.args['list_name']
-    #TO DO: insert function to call oxford API to get definitions for each word to generate list
-    return render_template('vocab_list.html', vocab=vocab, listname=listname)
+    words = vocab.split(',')
+    definitions = dict()
+    for word in words:
+        word_id = word.lower()
+        url = 'https://od-api.oxforddictionaries.com/api/v2/' + endpoint + '/' + language_code + '/' + word_id
+        try:
+            r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
+        except Exception as e:
+            error = str(e)
+        response = r.json()
+        definition = response["results"][0]["lexicalEntries"][0]["entries"][0]["senses"][0]["definitions"]
+        definitions[word] = definition[0]
+
+    return render_template('vocab_list.html', words=words, listname=listname, definitions=definitions, error=error)
 
 @app.route('/signup', methods=["POST", "GET"])
 def signup():
