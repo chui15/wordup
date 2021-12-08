@@ -3,7 +3,6 @@ from flask_session import Session
 import config
 import json
 import requests
-import pdfkit
 
 # connect to postgresql database
 cur = config.connect()
@@ -112,14 +111,14 @@ def new_list():
 
     # get list id of list inserted above
     try:
-        cur.execute("SELECT * FROM list_items WHERE listname = '{0}'".format(listname))
+        cur.execute("SELECT listitem_id FROM list_items WHERE listname = '{0}'".format(listname))
     except Exception as e:
         print(e)
     res = cur.fetchone()
     list_id = results[0]
     # insert into user_list table with list ID from previous insertion
     try:
-        cur.execute("INSERT INTO user_list VALUES (%d, %d)",(session['user_id'], list_id))
+        cur.execute("INSERT INTO user_list VALUES (%d, %d)",(session.get('user_id', None), list_id))
     except Exception as e:
         print(e)
 
