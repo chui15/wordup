@@ -34,7 +34,7 @@ Agile, primarily using Jira for story/feature tracking
 
 - Flask
 - Python3
-- MySQL
+- PostgreSQL
 - HTML & CSS
 
 ## Set Up Environment
@@ -53,5 +53,7 @@ npm install
 ``` shell
 source wordup/bin/activate
 cd wordup
-python3 app/main.py
+export FLASK_APP=app/main.py
+export FLASK_ENV=development
+flask run
 ```
