@@ -25,7 +25,8 @@ def login():
         if password != db_pass or username != db_user:
             error = 'Invalid username and password, please try again'
         else:
-            # TODO initiate session here?
+            # session UID (User ID) is set here
+            session['UID'] = results[0]
             return redirect(url_for('index', user=db_user))
     return render_template('login.html', error=error)
 
