@@ -18,6 +18,9 @@
             <h1 class="home-title">Welcome, {{user.name}} &#128075;</h1>
             <div class="list-container">
                 <h2>My Vocabulary Lists</h2>
+                {% for list_name in lists %}
+                    <h3>{{ list_name }}</h3>
+                {% endfor %}
                 <button class="submit" type="submit" value="Create">
                     <a href="{{ url_for('create_list') }}">Create New List</a>
                 </button>

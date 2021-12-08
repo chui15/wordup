@@ -3,9 +3,14 @@ from flask_session import Session
 import config
 import json
 import requests
+# import os
+# import psycopg2
 
 # connect to postgresql database
 cur = config.connect()
+# conn = psycopg2.connect(config.DATABASE_URL, sslmode='require')
+# conn.autocommit = True
+# cur = conn.cursor()
 
 # Oxford API credentials
 app_id = '4edc5d8e'
@@ -26,7 +31,7 @@ def login():
         password = str(request.form.get('password')).strip()
         # Retrieving data
         try:
-            cur.execute("SELECT * from users WHERE username = %s AND password = %s", (username, password))
+            cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
         except Exception as e:
             error = str(e)
         results = cur.fetchone()
@@ -47,7 +52,18 @@ def index():
         'name': username,
         'id': session.get('user_id', None)
     }
-    return render_template('index.html', user=user_info)
+    # get user's current lists if they have any
+    try:
+        cur.execute("SELECT listname FROM list_items RIGHT OUTER JOIN user_list ON (list_items.listitem_id = user_list.listitem_id)")
+    except Exception as e:
+        print(e)
+
+    results = cur.fetchall()
+    lists = []
+    for vocab_list in results:
+        lists.append(vocab_list[0].strip())
+
+    return render_template('index.html', user=user_info, lists=lists)
 
 @app.route('/createlist', methods=["POST", "GET"])
 def create_list():
@@ -70,15 +86,46 @@ def new_list():
     words = vocab.split(',')
     definitions = dict()
     for word in words:
-        word_id = word.lower()
-        url = 'https://od-api.oxforddictionaries.com/api/v2/' + endpoint + '/' + language_code + '/' + word_id
+        # first check our cache to see if we've already looked up the word
         try:
-            r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
+            cur.execute("SELECT * FROM oxford_cache WHERE word = '{0}'".format(word.strip()))
         except Exception as e:
-            error = str(e)
-        response = r.json()
-        definition = response["results"][0]["lexicalEntries"][0]["entries"][0]["senses"][0]["definitions"]
-        definitions[word] = definition[0]
+            print(e)
+        results = cur.fetchone()
+        if len(results) > 0:
+            word_definition = results[2].strip()
+            definitions[word] = word_definition
+        else:
+            word_id = word.lower().strip()
+            url = 'https://od-api.oxforddictionaries.com/api/v2/' + endpoint + '/' + language_code + '/' + word_id
+            try:
+                r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
+            except Exception as e:
+                error = str(e)
+            response = r.json()
+            definition = response["results"][0]["lexicalEntries"][0]["entries"][0]["senses"][0]["definitions"]
+            definitions[word] = definition[0]
+            cur.execute("INSERT INTO oxford_cache VALUES (DEFAULT, %s, %s)", (word_id, definition))
+
+    listitems = ', '.join("{!s}={!r}".format(key,val) for (key,val) in definitions.items())
+    # insert into list_items table (flattened definitions dict into a string)
+    try:
+        cur.execute("INSERT INTO list_items VALUES (DEFAULT, %s, %s)", (listname, listitems))
+    except Exception as e:
+        print(e)
+
+    # get list id of list inserted above
+    try:
+        cur.execute("SELECT * FROM list_items WHERE listname = '{0}'".format(listname))
+    except Exception as e:
+        print(e)
+    res = cur.fetchone()
+    list_id = results[0]
+    # insert into user_list table with list ID from previous insertion
+    try:
+        cur.execute("INSERT INTO user_list VALUES (%d, %d)",(session['user_id'], list_id))
+    except Exception as e:
+        print(e)
 
     return render_template('vocab_list.html', words=words, listname=listname, definitions=definitions, error=error)
 

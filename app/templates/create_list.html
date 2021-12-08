@@ -14,7 +14,7 @@
             <form action="{{ url_for('create_list') }}" method="POST">
                 <p class="form-label">List Name</p>
                 <input type="text" class="form-input" placeholder="i.e. List 1" name="listname" value="{{request.form.listname}}">
-                <p class="instructions">Please enter each word you would like to include in your vocabulary list in the box below, separating each word with a comma.</p>
+                <p class="instructions">Please enter each word you would like to include in your vocabulary list in the box below (at least 3 words), separating each word with a comma.</p>
                 <input type="text" class="vocab-input" placeholder="i.e. accede, berate, burnish" name="words" value="{{request.form.words}}">
                 {% if error %}
                 <p class="error">Error: {{ error }}</p>
