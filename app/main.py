@@ -3,14 +3,10 @@ from flask_session import Session
 import config
 import json
 import requests
-# import os
-# import psycopg2
+import pdfkit
 
 # connect to postgresql database
 cur = config.connect()
-# conn = psycopg2.connect(config.DATABASE_URL, sslmode='require')
-# conn.autocommit = True
-# cur = conn.cursor()
 
 # Oxford API credentials
 app_id = '4edc5d8e'
@@ -107,7 +103,7 @@ def new_list():
             definitions[word] = definition[0]
             cur.execute("INSERT INTO oxford_cache VALUES (DEFAULT, %s, %s)", (word_id, definition))
 
-    listitems = ', '.join("{!s}={!r}".format(key,val) for (key,val) in definitions.items())
+    listitems = '; '.join("{!s} = {!r}".format(key,val) for (key,val) in definitions.items())
     # insert into list_items table (flattened definitions dict into a string)
     try:
         cur.execute("INSERT INTO list_items VALUES (DEFAULT, %s, %s)", (listname, listitems))
@@ -147,6 +143,18 @@ def signup():
             cur.execute("INSERT INTO users VALUES (DEFAULT, %s, %s, %s, %s)", (username, firstname, lastname, password))
             success = 'Account successfully created! Please click the logo to return to the login page'
     return render_template('signup.html', user_error=user_error, password_error=password_error, success=success)
+
+@app.route('/mylist', methods=["POST","GET"])
+def get_list():
+    listname = request.args['listname']
+    try:
+        cur.execute("SELECT listitems FROM list_items WHERE listname = '{0}'".format(listname))
+    except Exception as e:
+        print(e)
+    res = cur.fetchone()
+    list_items = res[0]
+    definitions = dict((a.strip(), b.strip()) for a, b in (item.split('=') for item in list_items.split('; ')))
+    return render_template('my_list.html', definitions=definitions, listname=listname)
 
 if __name__ == '__main__':
     app.run(debug=True)

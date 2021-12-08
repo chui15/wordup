@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>WordUp - Your New List</title>
+        <title>WordUp - Vocab List</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
         <link rel="shortcut icon" type="png" href="{{ url_for('static', filename='images/logo.png') }}">
@@ -14,10 +14,6 @@
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo">
             </a>
             <h2 class="home-title">Your Vocabulary List: {{ listname }}</h2>
-            <button class="submit" type="submit" value="Save">
-                <!-- <a href="{{ url_for('save_list') }}">Save My List</a> -->
-                Save My List
-            </button>
             <table class="centered words-table">
                 <tr>
                     <th>Word</th>
@@ -26,7 +22,7 @@
                 {% for k, v in definitions.items() %}
                     <tr>
                         <td>{{ k }}</td>
-                        <td>{{ v }}</td>
+                        <td>{{ v.strip('"') }}</td>
                     </tr>
                 {% endfor %}
             </table>
