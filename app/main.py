@@ -79,15 +79,21 @@ def new_list():
     vocab = request.args['vocab_list']
     listname = request.args['list_name']
     words = vocab.split(',')
+    # first check/update our cache 
+    cache = {}
+    try:
+        cur.execute("SELECT * FROM oxford_cache")
+    except Exception as e:
+            print(e)
+    results = cur.fetchall()
+    for item in results:
+        word_definition = item[2].strip()
+        word = item[1].strip()
+        cache[word] = word_definition
+
     definitions = dict()
     for word in words:
-        # first check our cache to see if we've already looked up the word
-        try:
-            cur.execute("SELECT * FROM oxford_cache WHERE word = '{0}'".format(word.strip()))
-        except Exception as e:
-            print(e)
-        results = cur.fetchone()
-        if len(results) > 0:
+        if word in cache:
             word_definition = results[2].strip()
             definitions[word] = word_definition
         else:
@@ -102,7 +108,7 @@ def new_list():
             definitions[word] = definition[0]
             cur.execute("INSERT INTO oxford_cache VALUES (DEFAULT, %s, %s)", (word_id, definition))
 
-    listitems = '; '.join("{!s} = {!r}".format(key,val) for (key,val) in definitions.items())
+    listitems = '| '.join("{0} = {1}".format(key,val) for (key,val) in definitions.items())
     # insert into list_items table (flattened definitions dict into a string)
     try:
         cur.execute("INSERT INTO list_items VALUES (DEFAULT, %s, %s)", (listname, listitems))
@@ -115,10 +121,11 @@ def new_list():
     except Exception as e:
         print(e)
     res = cur.fetchone()
-    list_id = results[0]
+    list_id = int(results[0])
     # insert into user_list table with list ID from previous insertion
+    user_id = int(session.get('user_id', None))
     try:
-        cur.execute("INSERT INTO user_list VALUES (%d, %d)",(session.get('user_id', None), list_id))
+        cur.execute("INSERT INTO user_list VALUES (%d, %d)",(user_id, list_id))
     except Exception as e:
         print(e)
 
@@ -152,7 +159,7 @@ def get_list():
         print(e)
     res = cur.fetchone()
     list_items = res[0]
-    definitions = dict((a.strip(), b.strip()) for a, b in (item.split('=') for item in list_items.split('; ')))
+    definitions = dict((a.strip(), b.strip()) for a, b in (item.split('=') for item in list_items.split('| ')))
     return render_template('my_list.html', definitions=definitions, listname=listname)
 
 if __name__ == '__main__':
