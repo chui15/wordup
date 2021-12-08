@@ -94,7 +94,7 @@ def new_list():
     definitions = dict()
     for word in words:
         if word in cache:
-            word_definition = results[2].strip()
+            word_definition = ''.join(c for c in cache[word] if c not in '{}""')
             definitions[word] = word_definition
         else:
             word_id = word.lower().strip()
@@ -121,11 +121,11 @@ def new_list():
     except Exception as e:
         print(e)
     res = cur.fetchone()
-    list_id = int(results[0])
+    list_id = res[0]
     # insert into user_list table with list ID from previous insertion
-    user_id = int(session.get('user_id', None))
+    user_id = session.get('user_id', None)
     try:
-        cur.execute("INSERT INTO user_list VALUES (%d, %d)",(user_id, list_id))
+        cur.execute("INSERT INTO user_list VALUES (%s, %s)",(int(user_id), int(list_id)))
     except Exception as e:
         print(e)
 
