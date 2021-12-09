@@ -68,21 +68,20 @@ def index():
     }
     # get user's current lists if they have any
     try:
-        cur.execute("SELECT listname FROM list_items RIGHT OUTER JOIN user_list ON (list_items.listitem_id = user_list.listitem_id)")
+        cur.execute("SELECT list_items.listitem_id, listname FROM list_items RIGHT OUTER JOIN user_list ON (list_items.listitem_id = user_list.listitem_id)")
     except Exception as e:
         print(e)
 
     results = cur.fetchall()
-    lists = []
+    lists = {}
     for vocab_list in results:
-        lists.append(vocab_list[0].strip())
+        lists[vocab_list[0]] = vocab_list[1].strip()
 
     return render_template('index.html', user=user_info, lists=lists)
 
 @app.route('/createlist', methods=["POST", "GET"])
 def create_list():
     error = None
-    user_id = session.get('user_id', None)
     if request.method == 'POST':
         vocab_list = str(request.form.get('words')).strip()
         list_name = str(request.form.get('listname')).strip()
@@ -172,8 +171,9 @@ def signup():
 @app.route('/mylist', methods=["POST","GET"])
 def get_list():
     listname = request.args['listname']
+    list_id = request.args['listID']
     try:
-        cur.execute("SELECT listitems FROM list_items WHERE listname = '{0}'".format(listname))
+        cur.execute("SELECT listitems FROM list_items WHERE listname = '{0}' AND listitem_id = {1}".format(listname, list_id))
     except Exception as e:
         print(e)
     res = cur.fetchone()

@@ -18,9 +18,9 @@
             <h1 class="home-title">Welcome, {{user.name}} &#128075;</h1>
             <div class="list-container">
                 <h2 class="home-title">My Vocabulary Lists</h2>
-                {% for list_name in lists %}
+                {% for k, v in lists.items() %}
                     <ul>
-                        <li><a href="{{ url_for('get_list', listname=list_name) }}" class="list-name">{{ list_name }}</a></li>
+                        <li><a href="{{ url_for('get_list', listname=v, listID=k) }}" class="list-name">{{ v }}</a></li>
                     </ul>
                 {% endfor %}
             </div>
