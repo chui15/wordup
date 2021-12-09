@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "bin/pip3.9"
+    "python.pythonPath": "bin/pip3.9",
+    "git.ignoreLimitWarning": true
 }
