@@ -79,6 +79,10 @@ body {
     color: blue;
 }
 
+a:hover {
+    color: blue;
+}
+
 .error {
     color: red;
     text-align: center;
@@ -130,11 +134,52 @@ a {
     width: 100%;
     box-sizing: border-box;
     font-size: 22px;
-    padding: 0 0 400px 0;
+    padding: 0 0 200px 0;
     line-height: 1em;
     resize: none;
     border-style: none;
     border-radius: 10px;
-    background-color: #f8f8f8;
     text-align: left;
+    margin-top: 20px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+.centered {
+    margin: auto;
+    width: 90%;
+}
+
+.words-table {
+    border-radius: 10px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    background-color: #ffffff;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: justify;
+}
+
+th {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+td {
+    font-size: 20px;
+}
+
+.list-container {
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+    padding: 25px;
+    width: 400px;
+    margin: auto;
+}
+
+.list-name {
+    font-size: 20px;
 }

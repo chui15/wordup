@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>WordUp - Vocab List</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="container">
+            <h2 class="home-title">Your Vocabulary List: {{ listname }}</h2>
+            <table class="centered words-table">
+                <tr>
+                    <th>Word</th>
+                    <th>Definition</th>
+                </tr>
+                {% for k, v in definitions.items() %}
+                    <tr>
+                        <td>{{ k }}</td>
+                        <td>{{ v.strip('"') }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>

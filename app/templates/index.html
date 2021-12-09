@@ -17,11 +17,16 @@
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="word up logo" class="logo-index">
             <h1 class="home-title">Welcome, {{user.name}} &#128075;</h1>
             <div class="list-container">
-                <h2>My Vocabulary Lists</h2>
-                <button class="submit" type="submit" value="New">
-                    <a href="{{ url_for('submit_list') }}">Create New List</a>
-                </button>
+                <h2 class="home-title">My Vocabulary Lists</h2>
+                {% for k, v in lists.items() %}
+                    <ul>
+                        <li><a href="{{ url_for('get_list', listname=v, listID=k) }}" class="list-name">{{ v }}</a></li>
+                    </ul>
+                {% endfor %}
             </div>
+            <button class="submit" type="submit" value="Create">
+                <a href="{{ url_for('create_list') }}">Create New List</a>
+            </button>
         </div>
     </body>
 </html>
