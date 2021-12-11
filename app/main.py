@@ -56,26 +56,32 @@ def login():
         if password != db_pass or username != db_user:
             error = 'Invalid username and password, please try again'
         else:
-            return redirect(url_for('index', user=db_user))
+            return redirect(url_for('index', user=db_user, user_id=db_id))
     return render_template('login.html', error=error)
 
 @app.route('/index')
 def index():
     username = request.args['user']
+    user_id = request.args['user_id']
     user_info = {
         'name': username,
-        'id': session.get('user_id', None)
+        'id': user_id
     }
     # get user's current lists if they have any
     try:
-        cur.execute("SELECT list_items.listitem_id, listname FROM list_items RIGHT OUTER JOIN user_list ON (list_items.listitem_id = user_list.listitem_id)")
+        cur.execute("SELECT list_items.listitem_id, listname FROM list_items RIGHT OUTER JOIN user_list ON (list_items.listitem_id = user_list.listitem_id) WHERE user_list.user_id = {0} ORDER BY list_items.listitem_id".format(user_id))
     except Exception as e:
         print(e)
 
-    results = cur.fetchall()
+    try:
+        results = cur.fetchall()
+    except Exception as e:
+        print(e)
+
     lists = {}
-    for vocab_list in results:
-        lists[vocab_list[0]] = vocab_list[1].strip()
+    if results:
+        for vocab_list in results:
+            lists[vocab_list[0]] = vocab_list[1].strip()
 
     return render_template('index.html', user=user_info, lists=lists)
 
