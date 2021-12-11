@@ -68,7 +68,7 @@ def index():
     }
     # get user's current lists if they have any
     try:
-        cur.execute("SELECT list_items.listitem_id, listname FROM list_items RIGHT OUTER JOIN user_list ON (list_items.listitem_id = user_list.listitem_id) WHERE user_list.user_id = {0} ORDER BY list_items.listitem_id").format(session.get('user_id', None))
+        cur.execute("SELECT list_items.listitem_id, listname FROM list_items RIGHT OUTER JOIN user_list ON (list_items.listitem_id = user_list.listitem_id)")
     except Exception as e:
         print(e)
 
